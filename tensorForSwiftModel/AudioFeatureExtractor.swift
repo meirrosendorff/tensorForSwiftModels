@@ -10,7 +10,7 @@ import Foundation
 import TensorFlow
 import Python
 
-func AudioFeatureExtractor(fileName name: String, numMFCC: Int) -> AudioFeature {
+func audioFeatureExtractor(fileName name: String, numMFCC: Int) -> AudioFeature {
   
   let librosa = Python.import("librosa")
   let np  = Python.import("numpy")

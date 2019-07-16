@@ -7,9 +7,16 @@
 //
 
 import Foundation
+import Python
 
 let rootPath = "/Users/MRosendorff/DVT_Grad_Program/tensorForSwiftModel/tensorForSwiftModel/"
-let outputDir = "splitAudio/"
 
-print(AudioFeatureExtractor(fileName: "\(rootPath)\(outputDir)0.wav", numMFCC: 40))
+let dataSet = parseAudioFilesToNumpyArray(dir: rootPath, indexFile: "audioLog.txt", savedFileName: "numpyArrays/test")
+
+let np = Python.import("numpy")
+
+let labelsSaved = np.load(rootPath + "numpyArrays/test_labels.npy")
+
+print(dataSet.labels)
+print(labelsSaved)
 
