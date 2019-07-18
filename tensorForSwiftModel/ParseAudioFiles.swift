@@ -10,13 +10,14 @@ import Foundation
 import TensorFlow
 import Python
 
-func parseAudioFilesToNumpyArray(dir: String, indexFile fileName: String, savedFileName: String? = nil) -> (features: PythonObject, labels: PythonObject) {
+//use max files if you dont want to read in all files
+func parseAudioFilesToNumpyArray(dir: String, indexFile fileName: String, savedFileName: String? = nil, maxFiles: Int? = nil) -> (features: PythonObject, labels: PythonObject) {
   
   let io = Python.import("io")
   let np = Python.import("numpy")
   
   let featuresSize = 153
-  let numMFCC = 50
+  let numMFCC = 40
   let totalFeatures = featuresSize + numMFCC
   
   let indexFile = io.open(dir + fileName, "r")
@@ -25,6 +26,7 @@ func parseAudioFilesToNumpyArray(dir: String, indexFile fileName: String, savedF
   var labels = np.empty(0)
 
   var numProccesed = 1
+  var healthynum = 0
   for line in indexFile {
     
     print("Proccesing audio \(numProccesed)")
@@ -33,6 +35,15 @@ func parseAudioFilesToNumpyArray(dir: String, indexFile fileName: String, savedF
     let audioFile = String(lineValues[0])
     
     let label = getLabel(lineValues)
+  
+    //Uncomment to limit the number of healthy sounds
+    
+//    if label == 0 {
+//      healthynum += 1
+//      if healthynum % 3 != 0 {
+//        continue
+//      }
+//    }
     
     let feature = audioFeatureExtractor(fileName: dir + audioFile, numMFCC: numMFCC)
     
@@ -43,6 +54,8 @@ func parseAudioFilesToNumpyArray(dir: String, indexFile fileName: String, savedF
     labels = np.append(labels, label)
 
     numProccesed += 1
+    
+    if let limit = maxFiles, numProccesed > limit { break }
     
   }
   

@@ -10,9 +10,11 @@
 		5075769722DC4E30009E9B18 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5075769622DC4E30009E9B18 /* main.swift */; };
 		5091923422DD921E0067B454 /* AudioFeatureExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5091923322DD921E0067B454 /* AudioFeatureExtractor.swift */; };
 		5091923622DD9F800067B454 /* ParseAudioFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5091923522DD9F800067B454 /* ParseAudioFiles.swift */; };
+		5091923822DDD4DB0067B454 /* BreathingModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5091923722DDD4DB0067B454 /* BreathingModel.swift */; };
+		5091923A22DDDFAA0067B454 /* DataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5091923922DDDFAA0067B454 /* DataSet.swift */; };
+		5091923C22DEE5020067B454 /* dataInterpretationHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5091923B22DEE5020067B454 /* dataInterpretationHelpers.swift */; };
 		50AAAEE622DC83C00031B102 /* libtensorflow.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AAAEE522DC83C00031B102 /* libtensorflow.so */; };
 		50AAAEE822DC83C80031B102 /* libtensorflow_framework.so in Frameworks */ = {isa = PBXBuildFile; fileRef = 50AAAEE722DC83C80031B102 /* libtensorflow_framework.so */; };
-		50AAAEEF22DCBA770031B102 /* formatData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50AAAEEE22DCBA770031B102 /* formatData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -44,9 +46,11 @@
 		507576A022DC4E84009E9B18 /* libtensorflow_framework.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtensorflow_framework.so; path = "../../../../Library/Developer/Toolchains/swift-tensorflow-RELEASE-0.3-a.xctoolchain/usr/lib/swift/macosx/libtensorflow_framework.so"; sourceTree = "<group>"; };
 		5091923322DD921E0067B454 /* AudioFeatureExtractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioFeatureExtractor.swift; sourceTree = "<group>"; };
 		5091923522DD9F800067B454 /* ParseAudioFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParseAudioFiles.swift; sourceTree = "<group>"; };
+		5091923722DDD4DB0067B454 /* BreathingModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreathingModel.swift; sourceTree = "<group>"; };
+		5091923922DDDFAA0067B454 /* DataSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSet.swift; sourceTree = "<group>"; };
+		5091923B22DEE5020067B454 /* dataInterpretationHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dataInterpretationHelpers.swift; sourceTree = "<group>"; };
 		50AAAEE522DC83C00031B102 /* libtensorflow.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtensorflow.so; path = "../../../../Library/Developer/Toolchains/swift-tensorflow-RELEASE-0.4.xctoolchain/usr/lib/swift/macosx/libtensorflow.so"; sourceTree = "<group>"; };
 		50AAAEE722DC83C80031B102 /* libtensorflow_framework.so */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libtensorflow_framework.so; path = "../../../../Library/Developer/Toolchains/swift-tensorflow-RELEASE-0.4.xctoolchain/usr/lib/swift/macosx/libtensorflow_framework.so"; sourceTree = "<group>"; };
-		50AAAEEE22DCBA770031B102 /* formatData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = formatData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,9 +88,11 @@
 			children = (
 				5075769622DC4E30009E9B18 /* main.swift */,
 				501A274022DC638F003E5B10 /* tensorForSwiftModel-Bridging-Header.h */,
-				50AAAEEE22DCBA770031B102 /* formatData.swift */,
 				5091923322DD921E0067B454 /* AudioFeatureExtractor.swift */,
 				5091923522DD9F800067B454 /* ParseAudioFiles.swift */,
+				5091923722DDD4DB0067B454 /* BreathingModel.swift */,
+				5091923922DDDFAA0067B454 /* DataSet.swift */,
+				5091923B22DEE5020067B454 /* dataInterpretationHelpers.swift */,
 			);
 			path = tensorForSwiftModel;
 			sourceTree = "<group>";
@@ -169,10 +175,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5091923A22DDDFAA0067B454 /* DataSet.swift in Sources */,
 				5091923622DD9F800067B454 /* ParseAudioFiles.swift in Sources */,
 				5091923422DD921E0067B454 /* AudioFeatureExtractor.swift in Sources */,
 				5075769722DC4E30009E9B18 /* main.swift in Sources */,
-				50AAAEEF22DCBA770031B102 /* formatData.swift in Sources */,
+				5091923C22DEE5020067B454 /* dataInterpretationHelpers.swift in Sources */,
+				5091923822DDD4DB0067B454 /* BreathingModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
