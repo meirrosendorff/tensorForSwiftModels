@@ -31,3 +31,14 @@
 ## Notes
 - After the first run the dataset is saved in numpyArrays/ under the dataset name at the top if the file so if you arent changing the dataset (like changng the number of files or something like that) then you can comment out the parseAudioFilesToNumpyArray function after the first run as as the Dataset object only need the dataset name and will then read in these files.
 - You can optionally add the parameter maxFiles to parseAudioFilesToNumpyArray to limit the number of files used, this can speed up testing as you arent using the full dataset.
+
+## Dependancies
+### Python Libraries 
+```
+os - Reading files
+pydub - Editing Audio Files
+numpy - numpy stuff
+librosa - feature extraction from audio files.
+scikit learn - seperating testing an training datasets
+matplotlib - graphing output
+```
