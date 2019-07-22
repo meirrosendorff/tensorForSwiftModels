@@ -9,6 +9,7 @@
 import Foundation
 import TensorFlow
 import Python
+import CoreML
 
 //use max files if you dont want to read in all files
 func parseAudioFilesToNumpyArray(dir: String, indexFile fileName: String, savedFileName: String? = nil, maxFiles: Int? = nil) -> (features: PythonObject, labels: PythonObject) {
@@ -16,17 +17,23 @@ func parseAudioFilesToNumpyArray(dir: String, indexFile fileName: String, savedF
   let io = Python.import("io")
   let np = Python.import("numpy")
   
-  let featuresSize = 153
-  let numMFCC = 40
-  let totalFeatures = featuresSize + numMFCC
+//  let featuresSize = 153
+//  let numMFCC = 40
+//  let totalFeatures = featuresSize + numMFCC
+  
+//  let seconds = 2
+//  let sampleRate = 44100
+//  let totalFeatures = seconds * sampleRate
+
+  let numMFCCCoeffs = 100
   
   let indexFile = io.open(dir + fileName, "r")
   
-  var features = np.empty([0,totalFeatures])
+  var features = np.empty([0,numMFCCCoeffs])
   var labels = np.empty(0)
 
   var numProccesed = 1
-  var healthynum = 0
+//  var healthynum = 0
   for line in indexFile {
     
     print("Proccesing audio \(numProccesed)")
@@ -45,9 +52,19 @@ func parseAudioFilesToNumpyArray(dir: String, indexFile fileName: String, savedF
 //      }
 //    }
     
-    let feature = audioFeatureExtractor(fileName: dir + audioFile, numMFCC: numMFCC)
+//    let feature = audioFeatureExtractor(fileName: dir + audioFile, numMFCC: numMFCC)
+//    
+//    let featureStack = np.hstack([feature.mfccs, feature.chroma, feature.mel, feature.contrast, feature.tonnetz])
     
-    let featureStack = np.hstack([feature.mfccs, feature.chroma, feature.mel, feature.contrast, feature.tonnetz])
+//    let feature = audioBinaryExtractor(fileURl: dir + audioFile, secondsLimit: Double(seconds), sampleRate: sampleRate)
+    
+    let feature = audioMFCCFeatureExtractor(fileName: dir + audioFile, numCoeffs: numMFCCCoeffs)
+    
+//    print(feature)
+    
+    if feature.isEmpty { continue }
+    
+    let featureStack = np.hstack(feature)
     
     features = np.vstack([features, featureStack])
 
@@ -90,5 +107,7 @@ func getLabel(_ values: [Substring]) -> Int {
   }
   return 0
 }
+
+
 
 
