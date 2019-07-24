@@ -64,7 +64,7 @@ func printConfusionMatrix(numLabels: Int, truth: Tensor<Int32>, prediction: Tens
 
   var toPrint = "\t\t\t"
 
-  for i in 0..<numLabels { toPrint += "\(i)\t\t\t"}
+  for i in 0..<numLabels { toPrint +=  i < 10 ? "\(i)\t\t\t" : "\(i)\t\t"}
   toPrint += "\n\t\t\t"
   for _ in 0..<numLabels { toPrint += "-\t\t\t"}
 
@@ -74,9 +74,9 @@ func printConfusionMatrix(numLabels: Int, truth: Tensor<Int32>, prediction: Tens
     
     for column in row {
       
-      if column > 1000 {
+      if column >= 1000 {
         toPrint += "\(column)\t"
-      } else if column > 10 {
+      } else if column >= 10 {
         toPrint += "\(column)\t\t"
       } else {
         toPrint += "\(column)\t\t\t"

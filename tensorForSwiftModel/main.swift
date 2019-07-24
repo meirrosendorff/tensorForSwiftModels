@@ -14,29 +14,31 @@ let np = Python.import("numpy")
 
 let rootPath = "/Users/MRosendorff/DVT_Grad_Program/tensorForSwiftModel/tensorForSwiftModel/"
 
-let datSetName = "first2000MFCC"
-let testPercentage = 0.2
-let hiddenSize: Int = 100
+//let savedModel = "\(rootPath)coreMLModels/"
+
+let dataSetName = "3D_2020"
+let testPercentage = 0.1
+let hiddenSize: Int = 420
 let learningRate: Float = 0.01
-let epochCount = 10000
-let numBatches = 10
-let modelName = "first2000_MFCC_hiddenSize\(hiddenSize)_batches\(numBatches)_epochs\(epochCount)"
+let epochCount = 200
+let numBatches = 70
+let modelName = "\(dataSetName)_hiddenSize\(hiddenSize)_batches\(numBatches)_epochs\(epochCount)"
 
 //reads in audio files, extracts the features and saves them as .npy files
 //Im saving in ./numpyArrays/ NB this directory must exist before you run else it will crash.
-_ = parseAudioFilesToNumpyArray(dir: rootPath, indexFile: "audioLog.txt", savedFileName: "numpyArrays/\(datSetName)", maxFiles: 2000)
+parseImagesToNumpyArray(dir: rootPath + "asl-alphabet/asl_alphabet_train/", savedFileName: "\(rootPath)numpyArrays/\(dataSetName)")
 
 //create a dataset from the files that where just saved to numpyArrays
 
-print("\nLoading Dataset \(datSetName)")
-guard let dataSet = DataSet(datSetName: "numpyArrays/\(datSetName)",
+print("\nLoading Dataset \(dataSetName)")
+guard let dataSet = DataSet(datSetName: "numpyArrays/\(dataSetName)",
                             testPercentage: testPercentage,
                             numBatches: numBatches) else { fatalError("Unable to build dataset") }
 
 //create a model
 
 print("\nBuilding model for Input Size: \(dataSet.dimOfInput), Output Size: \(dataSet.numLabels), Hidden Size \(hiddenSize)")
-var model = BreathingModel(inputSize: dataSet.dimOfInput,
+var model = ASLModel(inputDim: dataSet.dimOfInput,
                            outputSize: dataSet.numLabels,
                            hiddenSize: hiddenSize)
 
@@ -51,7 +53,7 @@ var testLossResults: [Float64] = []
 
 print("\nBegining Training with \(epochCount) epochs and \(numBatches) batches")
 
-print("\nTraining using \(datSetName) Dataset with \(dataSet.numTrainingFeatures) training examples in \(numBatches) batches and with \(dataSet.numTestingFeatures) testing examples")
+print("\nTraining using \(dataSetName) Dataset with \(dataSet.numTrainingFeatures) training examples in \(numBatches) batches and with \(dataSet.numTestingFeatures) testing examples\n")
 
 for epoch in 1...epochCount {
   var epochLoss: Float64 = 0
@@ -59,7 +61,7 @@ for epoch in 1...epochCount {
 
   for batch in dataSet.batches {
 
-    let (loss, grad) = model.valueWithGradient { (model: BreathingModel) -> Tensor<Float64> in
+    let (loss, grad) = model.valueWithGradient { (model: ASLModel) -> Tensor<Float64> in
       let logits = model(batch.features)
       return softmaxCrossEntropy(logits: logits, labels: batch.labels)
     }
@@ -83,19 +85,18 @@ for epoch in 1...epochCount {
     testAccuracyResults.append(testAccuracy)
   }
 
+  print("Epoch \(epoch): Loss: \(epochLoss),\tAccuracy: \(epochAccuracy):\tTest: Loss: \(testLoss),\tAccuracy: \(testAccuracy)")
   if epoch % 50 == 0 {
-    print("Epoch \(epoch): Loss: \(epochLoss),\tAccuracy: \(epochAccuracy):\tTest: Loss: \(testLoss),\tAccuracy: \(testAccuracy)")
 
-    print("Training Confusion Matrix")
-    printConfusionMatrix(numLabels: dataSet.numLabels, truth: dataSet.tr_labels, prediction: model(dataSet.tr_features).argmax(squeezingAxis: 1))
     print("Testing Confusion Matrix")
     printConfusionMatrix(numLabels: dataSet.numLabels, truth: dataSet.ts_labels, prediction: model(dataSet.ts_features).argmax(squeezingAxis: 1))
+    model.save(withName: rootPath + "coreMlModels/trainingLogs/\(modelName)_epoch\(epoch)_test\(Int(testAccuracyResults[testAccuracyResults.count - 1]*100))_train\(Int(trainAccuracyResults[trainAccuracyResults.count - 1]*100))")
   }
 }
 
 print("\nSaving Model coreMlModels\(modelName).mlmodel")
 
-model.save(withName: rootPath + "coreMlModels/\(modelName)")
+model.save(withName: rootPath + "coreMlModels/\(modelName)_test\(Int(testAccuracyResults[testAccuracyResults.count - 1]*100))_train\(Int(trainAccuracyResults[trainAccuracyResults.count - 1]*100))")
 
 
 print("\nGathering Data to display and building graphs")
