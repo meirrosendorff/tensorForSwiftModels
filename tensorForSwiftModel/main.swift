@@ -14,19 +14,18 @@ let np = Python.import("numpy")
 
 let rootPath = "/Users/MRosendorff/DVT_Grad_Program/tensorForSwiftModel/tensorForSwiftModel/"
 
-//let savedModel = "\(rootPath)coreMLModels/"
+let savedModel = "\(rootPath)coreMLModels/first_200_Gray_Scaled_fingers_2828_batches100_epochs200_test59_train72"
 
-let dataSetName = "3D_2020"
-let testPercentage = 0.1
-let hiddenSize: Int = 420
-let learningRate: Float = 0.01
+let dataSetName = "all_Gray_Scaled_fingers_2828"
+let testPercentage = 0.2
+let learningRate: Float = 0.1
 let epochCount = 200
-let numBatches = 70
-let modelName = "\(dataSetName)_hiddenSize\(hiddenSize)_batches\(numBatches)_epochs\(epochCount)"
+let numBatches = 100
+let modelName = "\(dataSetName)_batches\(numBatches)_epochs\(epochCount)"
 
 //reads in audio files, extracts the features and saves them as .npy files
 //Im saving in ./numpyArrays/ NB this directory must exist before you run else it will crash.
-parseImagesToNumpyArray(dir: rootPath + "asl-alphabet/asl_alphabet_train/", savedFileName: "\(rootPath)numpyArrays/\(dataSetName)")
+//parseImagesToNumpyArray(dir: rootPath + "fingerSpelling/", savedFileName: "\(rootPath)numpyArrays/\(dataSetName)", maxFilesPerCat: 200)
 
 //create a dataset from the files that where just saved to numpyArrays
 
@@ -37,10 +36,10 @@ guard let dataSet = DataSet(datSetName: "numpyArrays/\(dataSetName)",
 
 //create a model
 
-print("\nBuilding model for Input Size: \(dataSet.dimOfInput), Output Size: \(dataSet.numLabels), Hidden Size \(hiddenSize)")
+print("\nBuilding model for Input Size: \(dataSet.dimOfInput), Output Size: \(dataSet.numLabels)")
 var model = ASLModel(inputDim: dataSet.dimOfInput,
                            outputSize: dataSet.numLabels,
-                           hiddenSize: hiddenSize)
+                           savedModel: savedModel)
 
 print("\nConfiguring optomizer for learning rate: \(learningRate)")
 let optimizer = SGD(for: model, learningRate: learningRate)

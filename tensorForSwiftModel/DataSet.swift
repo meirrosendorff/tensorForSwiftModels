@@ -23,13 +23,12 @@ struct DataSet {
 
   init?(datSetName: String, testPercentage: Double, numBatches: Int) {
     
-    let alphabet: [String] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".compactMap({ $0.description })
-    labelNames = alphabet + ["del", "space", "nothing"]
+    labelNames = "abcdefghiklmnopqrstuvwxy".compactMap({ $0.description })
     
     let np = Python.import("numpy")
     let skLearn = Python.import("sklearn.model_selection")
     
-    print("Loadeding")
+    print("Loading")
     let labels = np.load(rootPath + "\(datSetName)_labels.npy")
     let features = np.load(rootPath + "\(datSetName)_features.npy")
 
@@ -39,7 +38,7 @@ struct DataSet {
     print("Spliting")
     
     var tr_features, ts_features, tr_labels, ts_labels: PythonObject!
-    
+
     (tr_features, ts_features, tr_labels, ts_labels) =
       skLearn.train_test_split(features,
                                labels,
