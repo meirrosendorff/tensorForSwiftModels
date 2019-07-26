@@ -28,15 +28,23 @@ func parseImagesToNumpyArray(dir: String, savedFileName: String? = nil, maxFiles
   
   var numProccesed = 0
   
+//  let biasSet = [0]
+  
   for featureDir in os.listdir(dir) {
     
     let label = getLabelForLetter(letter: String(featureDir)!)
+    
+    var biasedCount = 0
     
     let imageFiles = os.listdir("\(dir)\(featureDir)") //ensure good mix of all examples when taking less than everything
     random.Random(42).shuffle(imageFiles)
     for imageFile in  imageFiles where String(imageFile) != nil {
       
       print("Proccesing audio \(numProccesed) for \(featureDir)")
+      
+//      biasedCount += 1
+//
+//      if biasedCount > 300 && !biasSet.contains(label) { break }
 
       let img = cv2.imread("\(dir)\(featureDir)/\(String(imageFile)!)")
       let correctlySized = cv2.resize(img, Python.tuple(dim), interpolation: cv2.INTER_AREA)

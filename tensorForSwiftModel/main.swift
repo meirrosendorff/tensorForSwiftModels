@@ -14,18 +14,18 @@ let np = Python.import("numpy")
 
 let rootPath = "/Users/MRosendorff/DVT_Grad_Program/tensorForSwiftModel/tensorForSwiftModel/"
 
-let savedModel = "\(rootPath)coreMLModels/first_200_Gray_Scaled_fingers_2828_batches100_epochs200_test59_train72"
+let savedModel = "\(rootPath)coreMLModels/bias_Gray_Scaled_fingers_2828_batches300_epochs100_test92_train99"
 
 let dataSetName = "all_Gray_Scaled_fingers_2828"
-let testPercentage = 0.2
+let testPercentage = 0.01
 let learningRate: Float = 0.1
-let epochCount = 200
-let numBatches = 100
+let epochCount = 100
+let numBatches = 500
 let modelName = "\(dataSetName)_batches\(numBatches)_epochs\(epochCount)"
 
 //reads in audio files, extracts the features and saves them as .npy files
 //Im saving in ./numpyArrays/ NB this directory must exist before you run else it will crash.
-//parseImagesToNumpyArray(dir: rootPath + "fingerSpelling/", savedFileName: "\(rootPath)numpyArrays/\(dataSetName)", maxFilesPerCat: 200)
+//parseImagesToNumpyArray(dir: rootPath + "fingerSpelling/", savedFileName: "\(rootPath)numpyArrays/\(dataSetName)")
 
 //create a dataset from the files that where just saved to numpyArrays
 
