@@ -70,7 +70,7 @@ struct ASLModel: Layer {
 
     let coremltools = Python.import("coremltools")
 
-    let labelNames: [String] = "abcdefghiklmnopqrstuvwxy".compactMap({ $0.description })
+    let labelNames: [String] = "abcdefghiklmnopqrstuvwxy".compactMap({ $0.description })  + ["nothing"]
 
     let coreMLModel = coremltools.converters.keras.convert(model,
                                                            input_names: "image",

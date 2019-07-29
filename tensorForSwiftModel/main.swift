@@ -14,32 +14,30 @@ let np = Python.import("numpy")
 
 let rootPath = "/Users/MRosendorff/DVT_Grad_Program/tensorForSwiftModel/tensorForSwiftModel/"
 
-let savedModel = "\(rootPath)coreMLModels/bias_Gray_Scaled_fingers_2828_batches300_epochs100_test92_train99"
+//let savedModel = "\(rootPath)coreMLModels/first_20_augmented_Gray_Scaled_fingers_2828_batches10_epochs500_test80_train86"
 
-let dataSetName = "all_Gray_Scaled_fingers_2828"
-let testPercentage = 0.01
+let dataSetName = "first_200_augmented_Gray_Scaled_fingers_2828"
+let testPercentage = 0.2
 let learningRate: Float = 0.1
-let epochCount = 100
-let numBatches = 500
+let epochCount = 1000
+let numBatches = 200
 let modelName = "\(dataSetName)_batches\(numBatches)_epochs\(epochCount)"
 
-//reads in audio files, extracts the features and saves them as .npy files
+//reads in image files, processess thema and saves as .npy files
 //Im saving in ./numpyArrays/ NB this directory must exist before you run else it will crash.
-//parseImagesToNumpyArray(dir: rootPath + "fingerSpelling/", savedFileName: "\(rootPath)numpyArrays/\(dataSetName)")
+//If the dataset already exists this line can be commented outr as the Dataset innit will load the file from disk
+parseImagesToNumpyArray(dir: rootPath + "fingerSpelling/", savedFileName: "\(rootPath)numpyArrays/\(dataSetName)", maxFilesPerCat: 200)
 
 //create a dataset from the files that where just saved to numpyArrays
-
 print("\nLoading Dataset \(dataSetName)")
 guard let dataSet = DataSet(datSetName: "numpyArrays/\(dataSetName)",
                             testPercentage: testPercentage,
                             numBatches: numBatches) else { fatalError("Unable to build dataset") }
 
 //create a model
-
 print("\nBuilding model for Input Size: \(dataSet.dimOfInput), Output Size: \(dataSet.numLabels)")
 var model = ASLModel(inputDim: dataSet.dimOfInput,
-                           outputSize: dataSet.numLabels,
-                           savedModel: savedModel)
+                           outputSize: dataSet.numLabels)
 
 print("\nConfiguring optomizer for learning rate: \(learningRate)")
 let optimizer = SGD(for: model, learningRate: learningRate)
@@ -85,10 +83,13 @@ for epoch in 1...epochCount {
   }
 
   print("Epoch \(epoch): Loss: \(epochLoss),\tAccuracy: \(epochAccuracy):\tTest: Loss: \(testLoss),\tAccuracy: \(testAccuracy)")
+
   if epoch % 50 == 0 {
 
     print("Testing Confusion Matrix")
     printConfusionMatrix(numLabels: dataSet.numLabels, truth: dataSet.ts_labels, prediction: model(dataSet.ts_features).argmax(squeezingAxis: 1))
+    
+    //saves the models with a unique name including teh accuracy and loss in the name
     model.save(withName: rootPath + "coreMlModels/trainingLogs/\(modelName)_epoch\(epoch)_test\(Int(testAccuracyResults[testAccuracyResults.count - 1]*100))_train\(Int(trainAccuracyResults[trainAccuracyResults.count - 1]*100))")
   }
 }

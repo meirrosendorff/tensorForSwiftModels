@@ -23,7 +23,7 @@ struct DataSet {
 
   init?(datSetName: String, testPercentage: Double, numBatches: Int) {
     
-    labelNames = "abcdefghiklmnopqrstuvwxy".compactMap({ $0.description })
+    labelNames = "abcdefghiklmnopqrstuvwxy".compactMap({ $0.description }) + ["nothing"]
     
     let np = Python.import("numpy")
     let skLearn = Python.import("sklearn.model_selection")

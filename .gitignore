@@ -1,5 +1,4 @@
-tensorForSwiftModel/splitAudio
-tensorForSwiftModel/respiratory-sound-database
-tensorForSwiftModel/numpyArrays
+#tensorForSwiftModel/numpyArrays
 tensorForSwiftModel/asl-alphabet
-tensorForSwiftModel/coreMlModels
+#tensorForSwiftModel/coreMlModels
+tensorForSwiftModel/fingerSpelling
