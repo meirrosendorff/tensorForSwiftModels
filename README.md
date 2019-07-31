@@ -1,4 +1,4 @@
-# tensorForSwiftBreathingModel
+# tensorForSwift ASL Model
 
 
 ## Tensor flow installation
